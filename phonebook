@@ -1,0 +1,254 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#define max 500
+
+typedef struct {
+    char name[35];
+    int phone;
+    char address[150];
+    char email[100];
+}mainname;
+
+mainname stack[max];
+int top = -1;
+
+void waitforuser()
+{
+    printf("\t\t\t\tPress ENTER to continue. . . \n");
+    getchar();
+    getchar();
+    system("cls");
+}
+
+mainname newname;
+
+int checkDuplicate(char name[]) {
+    for (int i = 0; i <= top; i++) {
+        if (strcmp(name, stack[i].name) == 0) {
+            return 1; 
+        }
+    }
+    return 0; 
+}
+
+int duplicatenum(int number)
+{
+    for(int i=0;i <= top; i++)
+    {
+        if(strcmp(number, stack[i].phone) == 0)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
+void addnumber() {
+    system("cls");
+    if (top == max - 1) {
+         printf("\n\t\t\t===========================================================================\n");
+        printf("\t\t\t=====                           NEW NUMBER                             ====");
+        printf("\n\t\t\t===========================================================================\n");
+        printf("\t\t\t\tYour Phone Book Is Full . . . \n");
+        printf("\n\t\t\t===========================================================================\n");
+    } else {
+        printf("\n\t\t\t===========================================================================\n");
+        printf("\t\t\t=====                           NEW NUMBER                             ====");
+        printf("\n\t\t\t===========================================================================\n");
+        printf("\t\t\t\tPerson name: ");
+        scanf("%s", newname.name);
+        printf("\t\t\t\tPhone Number: ");
+        scanf("%d", &newname.phone);
+        printf("\t\t\t\tAddress: ");
+        scanf("%s", newname.address);
+        printf("\t\t\t\tEmail: ");
+        scanf("%s",newname.email);
+        printf("\n\t\t\t=============================================================================\n");
+        
+        if (checkDuplicate(newname.name)) {
+            printf("This name already exists in the phonebook. . . \n");
+        }
+        else if(duplicatenum(newname.phone))
+        {
+            printf("This number already exist in the phonebook. . .\n");
+        }
+         else {
+            top++;
+            stack[top] = newname;
+            printf("%s added successfully . . . \n", newname.name);
+        }
+
+        waitforuser();
+    }
+}
+
+void findpersonbyname()
+{
+    system("cls");
+    char name[50];
+    printf("person name: ");
+    scanf("%s",name);
+    int found = 0;
+
+    for(int i=0;i<=max;i++)
+    {
+        if(strcmp(name, stack[i].name) == 0)
+        {
+            found = 1;
+            printf("\n");
+            printf("\n\t\t\t===========================================================================");
+            printf("\n\t\t\t=                             Information                                 =");
+            printf("\n\t\t\t===========================================================================");
+            printf("\n\t\t\t|\tName     : %-50s |\n", stack[i].name);
+            printf("\n\t\t\t|\tNumber   : %-50d |\n", stack[i].phone);
+            printf("\n\t\t\t|\tAddress  : %-50s |\n", stack[i].address);
+            printf("\n\t\t\t|\tEmail    : %-50s |\n", stack[i].email);
+            printf("\n\t\t\t===========================================================================");
+
+        }
+        
+    }
+    if(found!=1)
+    printf("\t\t\t\tNot found. . . \n");
+
+    waitforuser();
+}
+
+void findpersonbynumber()
+{
+    system("cls");
+    int number;
+    printf("Phone Number: ");
+    scanf("%d",&number);
+
+    for(int i=0;i<=max;i++)
+    {
+        if(number == stack[i].phone)
+        {
+            printf("\n\t\t\t===========================================================================\n");
+            printf("\t\t\t=====                           Person Info                             ====");
+            printf("\n\t\t\t===========================================================================\n");
+            printf("\t\t\t\tname: %s\n",stack[i].name);
+            printf("\t\t\t\tnumber: %d\n",stack[i].phone);
+            printf("\t\t\t\tAddress: %s\n",stack[i].address);
+            printf("\t\t\t\tEmail: %s\n",stack[i].email);
+            printf("\n\t\t\t===========================================================================\n");
+        }
+        else
+        {
+            printf("\t\t\t\tNot found. . .\n");
+        }
+    }
+    waitforuser();
+}
+void findaperson() {
+    system("cls");
+    printf("\n\t\t************************************************************\n");
+    printf("\t\t*                  FIND A PERSON MENU                     *\n");
+    printf("\t\t************************************************************\n");
+    printf("\t\t*   1. Search by Name                                     *\n");
+    printf("\t\t*   2. Search by Phone Number                             *\n");
+    printf("\t\t*   3. Back to Main Menu                                  *\n");
+    printf("\t\t************************************************************\n");
+    
+    int ch;
+    printf("\t\tEnter Your Choice: ");
+    scanf("%d", &ch);
+
+    switch (ch) {
+        case 1:
+            findpersonbyname();
+            break;
+        case 2:
+            findpersonbynumber();
+            break;
+        case 3:
+        system("cls");
+            return;
+        default:
+            printf("\t\tInvalid choice! Please try again.\n");
+            waitforuser();
+            findaperson();
+    }
+}
+
+void removenumber()
+{
+    if(top == max - 1)
+    {
+        printf("\n\t\t\t===========================================================================\n");
+        printf("\t\t\t=====                           REMOVE NUMBER                             ====");
+        printf("\n\t\t\t===========================================================================\n");
+        printf("\t\t\t\tThere is no number in the phonebook . . . \n");
+        printf("\n\t\t\t===========================================================================\n");
+
+    }
+    else
+    {
+        printf("\n\t\t\t===========================================================================\n");
+        printf("\t\t\t=====                           REMOVE NUMBER                             ====");
+        printf("\n\t\t\t===========================================================================\n");
+
+        char name[50];
+        printf("Person Name: ");
+        scanf("%s",name);
+
+        if(checkDuplicate(name))
+        {
+            top - 1;
+            printf("%s removed from the phonebook. . .\n");
+            waitforuser();
+        }
+        else
+        {
+        printf("\n\t\t\t===========================================================================\n");
+        printf("\t\t\t=====                           REMOVE NUMBER                             ====");
+        printf("\n\t\t\t===========================================================================\n");
+
+        printf("%s not found. . .\n",name);
+        printf("\n===================================================================================\n");
+        }
+
+    }
+}
+
+
+int main()
+{
+    system("cls");
+    int n;
+    
+    do
+    {
+    printf("\t\t\t\t***********************************\n");
+    printf("\t\t\t\t*                                 *\n");
+    printf("\t\t\t\t*       WELCOME TO PHONEBOOK      *\n");
+    printf("\t\t\t\t*                                 *\n");
+    printf("\t\t\t\t***********************************\n\n");
+    printf("\t\t\t\t  1.Add Number\n\n");
+    printf("\t\t\t\t  2.Remove Number\n\n");
+    printf("\t\t\t\t  3.find a person\n\n");
+    printf("\t\t\t\t  0.exit\n\n");
+    printf("\t\t\t\t***********************************\n");
+    printf("\t\t\t\tPlease Choose an option: ");
+    scanf("%d",&n);
+
+    switch(n)
+    {
+        case 1:
+        addnumber();
+        break;
+        case 3:
+        findaperson();
+        break;
+        case 0:
+        return 0;
+
+        break;
+    }
+        
+    }while (n!=0);
+    
+}
